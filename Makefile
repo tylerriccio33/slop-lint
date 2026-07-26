@@ -3,7 +3,7 @@
 install: ## Install dependencies
 	@uv sync
 
-test: ## Run tests
+test: ## Run tests with coverage
 	@uv run pytest
 
 lint: ## Run ruff lint
@@ -12,7 +12,8 @@ lint: ## Run ruff lint
 typecheck: ## Run pyrefly typecheck
 	@uv run pyrefly check
 
-check: lint typecheck test ## Run lint, typecheck, and tests
+check: ## Run lint, typecheck, and tests (with coverage) via tox
+	@uv run tox
 
 ci: ## Commit on a branch, open a PR, merge it, then switch back to main and pull
 	@echo "Staging everything"
