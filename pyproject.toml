@@ -19,8 +19,11 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "pytest>=8.3",
+    "pytest-cov>=6.0",
     "ruff>=0.8",
     "pyrefly>=0.13",
+    "tox>=4.23",
+    "tox-uv>=1.13",
 ]
 
 [tool.slop-lint]
@@ -36,6 +39,16 @@ select = ["E", "F", "I", "UP", "B", "SIM", "C4"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--cov=slop_lint --cov-report=term-missing --cov-report=xml"
+
+[tool.coverage.run]
+source = ["src/slop_lint"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
 [tool.pyrefly]
 project-includes = ["src", "tests"]
