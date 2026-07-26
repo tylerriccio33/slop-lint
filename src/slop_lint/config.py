@@ -10,6 +10,7 @@ from pathlib import Path
 
 DEFAULT_ENABLED_RULES = ("banned-words", "max-sentence-length", "passive-voice")
 DEFAULT_MAX_SENTENCE_LENGTH = 20
+DEFAULT_MAX_NOUN_CLUSTER_LENGTH = 3
 
 
 @cache
@@ -25,6 +26,7 @@ class Config:
     enabled_rules: tuple[str, ...] = DEFAULT_ENABLED_RULES
     banned_words: frozenset[str] = field(default_factory=default_banned_words)
     max_sentence_length: int = DEFAULT_MAX_SENTENCE_LENGTH
+    max_noun_cluster_length: int = DEFAULT_MAX_NOUN_CLUSTER_LENGTH
 
     @classmethod
     def from_dict(cls, data: dict) -> Config:
@@ -35,6 +37,9 @@ class Config:
             banned_words=default_banned_words() | extra_words,
             max_sentence_length=int(
                 section.get("max-sentence-length", DEFAULT_MAX_SENTENCE_LENGTH)
+            ),
+            max_noun_cluster_length=int(
+                section.get("max-noun-cluster-length", DEFAULT_MAX_NOUN_CLUSTER_LENGTH)
             ),
         )
 
