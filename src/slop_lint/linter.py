@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from ste100_lint.config import Config
-from ste100_lint.extract import extract_text_blocks
-from ste100_lint.rules import REGISTRY
-from ste100_lint.rules.base import Finding
+from slop_lint.config import Config
+from slop_lint.extract import extract_text_blocks
+from slop_lint.rules import REGISTRY
+from slop_lint.rules.base import Finding
 
 
 def lint_source(source: str, config: Config) -> list[Finding]:

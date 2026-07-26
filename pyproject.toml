@@ -1,5 +1,5 @@
 [project]
-name = "ste100-lint"
+name = "slop-lint"
 version = "0.1.0"
 description = "Lint Python docstrings and comments for ASD-STE100 Simplified Technical English style and banned words"
 readme = "README.md"
@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.scripts]
-ste100-lint = "ste100_lint.cli:main"
+slop-lint = "slop_lint.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.11.18,<0.12.0"]
@@ -23,7 +23,7 @@ dev = [
     "pyrefly>=0.13",
 ]
 
-[tool.ste100-lint]
+[tool.slop-lint]
 enable = ["banned-words", "max-sentence-length", "passive-voice"]
 banned-words = ["new", "old", "utilize", "leverage", "synergy"]
 max-sentence-length = 20

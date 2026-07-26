@@ -108,7 +108,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ste100-lint"
+name = "slop-lint"
 version = "0.1.0"
 source = { editable = "." }
 

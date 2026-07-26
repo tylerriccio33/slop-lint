@@ -2,10 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from ste100_lint.cli import main
+from slop_lint.cli import main
 
 PYPROJECT = """
-[tool.ste100-lint]
+[tool.slop-lint]
 enable = ["banned-words"]
 banned-words = ["new", "old"]
 """

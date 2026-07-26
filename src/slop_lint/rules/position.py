@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ste100_lint.extract import TextBlock
+from slop_lint.extract import TextBlock
 
 
 def resolve_position(block: TextBlock, offset: int) -> tuple[int, int]:

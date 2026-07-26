@@ -1,4 +1,4 @@
-"""Command-line entry point: ``ste100-lint file1.py file2.py ...``."""
+"""Command-line entry point: ``slop-lint file1.py file2.py ...``."""
 
 from __future__ import annotations
 
@@ -6,12 +6,12 @@ import argparse
 import sys
 from pathlib import Path
 
-from ste100_lint.config import load_config
-from ste100_lint.linter import lint_source
+from slop_lint.config import load_config
+from slop_lint.linter import lint_source
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="ste100-lint")
+    parser = argparse.ArgumentParser(prog="slop-lint")
     parser.add_argument("files", nargs="+", type=Path)
     args = parser.parse_args(argv)
 

@@ -1,4 +1,4 @@
-"""Load ste100-lint configuration from ``[tool.ste100-lint]`` in pyproject.toml."""
+"""Load slop-lint configuration from ``[tool.slop-lint]`` in pyproject.toml."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ class Config:
 
     @classmethod
     def from_dict(cls, data: dict) -> Config:
-        section = data.get("tool", {}).get("ste100-lint", {})
+        section = data.get("tool", {}).get("slop-lint", {})
         return cls(
             enabled_rules=tuple(section.get("enable", DEFAULT_ENABLED_RULES)),
             banned_words=frozenset(w.lower() for w in section.get("banned-words", [])),

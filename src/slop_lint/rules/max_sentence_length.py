@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from ste100_lint.config import Config
-from ste100_lint.extract import TextBlock
-from ste100_lint.rules.base import Finding
-from ste100_lint.rules.position import resolve_position
-from ste100_lint.sentences import split_sentences
+from slop_lint.config import Config
+from slop_lint.extract import TextBlock
+from slop_lint.rules.base import Finding
+from slop_lint.rules.position import resolve_position
+from slop_lint.sentences import split_sentences
 
 name = "max-sentence-length"
 

@@ -1,4 +1,4 @@
-from ste100_lint.sentences import split_sentences
+from slop_lint.sentences import split_sentences
 
 
 def test_splits_on_terminal_punctuation():

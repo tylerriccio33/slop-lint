@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from ste100_lint.config import Config, load_config
+from slop_lint.config import Config, load_config
 
 PYPROJECT = """
-[tool.ste100-lint]
+[tool.slop-lint]
 enable = ["banned-words"]
 banned-words = ["new", "old"]
 max-sentence-length = 15

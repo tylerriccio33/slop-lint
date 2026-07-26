@@ -1,5 +1,5 @@
-from ste100_lint.config import Config
-from ste100_lint.linter import lint_source
+from slop_lint.config import Config
+from slop_lint.linter import lint_source
 
 SOURCE = '''"""This is the new module."""
 

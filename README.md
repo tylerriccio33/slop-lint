@@ -1,4 +1,4 @@
-# ste100-lint
+# slop-lint
 
 A pre-commit hook that lints Python docstrings and comments for
 [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English)
@@ -6,7 +6,7 @@ style, plus a project-configurable list of banned words.
 
 ## What it checks
 
-`ste100-lint` extracts every module, class, and function docstring, and every
+`slop-lint` extracts every module, class, and function docstring, and every
 `#` comment, from a Python file and runs a small set of rules against the
 prose:
 
@@ -23,15 +23,15 @@ one-word-one-meaning, no gerunds-as-nouns, etc.). See [Roadmap](#roadmap).
 ## Install
 
 ```bash
-uv add --dev ste100-lint
+uv add --dev slop-lint
 ```
 
 ## Configure
 
-Add a `[tool.ste100-lint]` table to `pyproject.toml`:
+Add a `[tool.slop-lint]` table to `pyproject.toml`:
 
 ```toml
-[tool.ste100-lint]
+[tool.slop-lint]
 enable = ["banned-words", "max-sentence-length", "passive-voice"]
 banned-words = ["new", "old", "utilize", "leverage", "synergy"]
 max-sentence-length = 20
@@ -47,10 +47,10 @@ This project ships a `.pre-commit-hooks.yaml`, so it works with either
 
 ```yaml
 repos:
-  - repo: https://github.com/tylerriccio33/ste100-lint
+  - repo: https://github.com/tylerriccio33/slop-lint
     rev: v0.1.0
     hooks:
-      - id: ste100-lint
+      - id: slop-lint
 ```
 
 Then:
@@ -63,7 +63,7 @@ prek run --all-files
 ## Run directly
 
 ```bash
-uv run ste100-lint path/to/file.py [more_files.py ...]
+uv run slop-lint path/to/file.py [more_files.py ...]
 ```
 
 Exits `1` if any findings are reported, `0` otherwise.
@@ -83,7 +83,7 @@ uv run pyrefly check
 ```
 
 This repo also dogfoods itself: `.pre-commit-config.yaml` runs ruff, pyrefly,
-and `ste100-lint` on every commit via `prek run --all-files`.
+and `slop-lint` on every commit via `prek run --all-files`.
 
 ## Roadmap
 
@@ -93,7 +93,7 @@ and `ste100-lint` on every commit via `prek run --all-files`.
   complex conjunction limits
 - Support for languages beyond Python (comment/docstring extraction is
   currently AST + `tokenize`-based and Python-specific)
-- Inline suppression comments (e.g. `# ste100: ignore`)
+- Inline suppression comments (e.g. `# slop-lint: ignore`)
 
 ## License
 

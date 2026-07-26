@@ -1,4 +1,4 @@
-from ste100_lint.extract import extract_comments, extract_docstrings, extract_text_blocks
+from slop_lint.extract import extract_comments, extract_docstrings, extract_text_blocks
 
 SOURCE = '''"""Module docstring."""
 

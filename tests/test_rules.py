@@ -1,6 +1,6 @@
-from ste100_lint.config import Config
-from ste100_lint.extract import TextBlock
-from ste100_lint.rules import banned_words, max_sentence_length, passive_voice
+from slop_lint.config import Config
+from slop_lint.extract import TextBlock
+from slop_lint.rules import banned_words, max_sentence_length, passive_voice
 
 
 def make_block(text: str, line: int = 1, col: int = 4) -> TextBlock:

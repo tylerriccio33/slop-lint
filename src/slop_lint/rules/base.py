@@ -5,8 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from ste100_lint.config import Config
-from ste100_lint.extract import TextBlock
+from slop_lint.config import Config
+from slop_lint.extract import TextBlock
 
 
 @dataclass(frozen=True, slots=True)

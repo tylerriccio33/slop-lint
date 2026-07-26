@@ -15,8 +15,8 @@ repos:
         pass_filenames: false
         types: [python]
 
-      - id: ste100-lint
-        name: ste100-lint
-        entry: uv run ste100-lint
+      - id: slop-lint
+        name: slop-lint
+        entry: uv run slop-lint
         language: system
         types: [python]
