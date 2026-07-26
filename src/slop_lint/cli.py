@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from slop_lint.config import load_config
+from slop_lint.extract import is_supported_file
 from slop_lint.linter import lint_source
 
 
@@ -19,10 +20,10 @@ def main(argv: list[str] | None = None) -> int:
     had_findings = False
 
     for path in args.files:
-        if path.suffix != ".py":
+        if not is_supported_file(path):
             continue
         source = path.read_text(encoding="utf-8")
-        for finding in lint_source(source, config):
+        for finding in lint_source(source, config, path=path):
             had_findings = True
             print(f"{path}:{finding.line}:{finding.col}: [{finding.rule}] {finding.message}")
 
