@@ -1,0 +1,6 @@
+- id: ste100-lint
+  name: ste100-lint
+  description: Lint Python docstrings and comments for ASD-STE100 style and banned words.
+  entry: ste100-lint
+  language: python
+  types: [python]
