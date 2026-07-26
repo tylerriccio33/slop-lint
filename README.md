@@ -12,7 +12,7 @@ prose:
 
 | Rule | What it flags |
 | --- | --- |
-| `banned-words` | Words you've explicitly disallowed in `pyproject.toml` (e.g. `new`, `old`) |
+| `banned-words` | Words from the built-in default list (`src/slop_lint/data/banned_words.txt`), plus any you add in `pyproject.toml` |
 | `max-sentence-length` | Sentences longer than a configurable word count (STE-100 targets ~20 words) |
 | `passive-voice` | `be` + past-participle constructions (`was written`, `is given`), as a proxy for STE-100's active-voice requirement |
 
@@ -33,11 +33,13 @@ Add a `[tool.slop-lint]` table to `pyproject.toml`:
 ```toml
 [tool.slop-lint]
 enable = ["banned-words", "max-sentence-length", "passive-voice"]
-banned-words = ["new", "old", "utilize", "leverage", "synergy"]
+banned-words = ["frobnicate"]
 max-sentence-length = 20
 ```
 
-All keys are optional; the defaults above apply if omitted.
+All keys are optional; the defaults above apply if omitted. `banned-words` in
+`pyproject.toml` *adds to* the built-in default list rather than replacing it —
+see `src/slop_lint/data/banned_words.txt` for the shipped defaults.
 
 ## Use as a pre-commit hook
 

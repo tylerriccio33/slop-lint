@@ -25,7 +25,6 @@ dev = [
 
 [tool.slop-lint]
 enable = ["banned-words", "max-sentence-length", "passive-voice"]
-banned-words = ["new", "old", "utilize", "leverage", "synergy"]
 max-sentence-length = 20
 
 [tool.ruff]
