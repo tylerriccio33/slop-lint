@@ -18,7 +18,7 @@ import pytest
 
 from slop_lint.config import Config
 from slop_lint.extract import TextBlock
-from slop_lint.rules import banned_words, max_sentence_length, passive_voice
+from slop_lint.rules import banned_words, max_sentence_length, noun_cluster_length, passive_voice
 
 
 def make_block(text: str, line: int = 1, col: int = 4) -> TextBlock:
@@ -33,6 +33,7 @@ def flagged(text: str, config: Config | None = None) -> bool:
         *banned_words.check(block, cfg),
         *max_sentence_length.check(block, cfg),
         *passive_voice.check(block, cfg),
+        *noun_cluster_length.check(block, cfg),
     ]
     return bool(findings)
 
@@ -55,7 +56,6 @@ def test_make_instructions_as_clear_and_specific_as_possible():
     assert flagged("Do the thing to the part as needed.")
 
 
-@pytest.mark.xfail(reason="no rule limits multi-word noun clusters to three words", strict=True)
 def test_no_multi_word_nouns_over_three_words():
     """Do not write multi-word nouns that have more than three words."""
     assert flagged("Replace the fuel pump drive shaft gear housing assembly.")
