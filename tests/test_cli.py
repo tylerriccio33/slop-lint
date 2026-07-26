@@ -37,8 +37,20 @@ def test_main_returns_0_when_clean(project: Path):
     assert main([str(target)]) == 0
 
 
-def test_main_skips_non_python_files(project: Path):
-    target = project / "notes.txt"
+def test_main_skips_unsupported_files(project: Path):
+    target = project / "notes.json"
     target.write_text("new old")
 
     assert main([str(target)]) == 0
+
+
+def test_main_lints_txt_files(project: Path, capsys: pytest.CaptureFixture):
+    target = project / "notes.txt"
+    target.write_text("This uses the new API.")
+
+    exit_code = main([str(target)])
+
+    assert exit_code == 1
+    out = capsys.readouterr().out
+    assert "banned-words" in out
+    assert "new" in out
