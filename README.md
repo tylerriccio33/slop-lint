@@ -70,6 +70,29 @@ uv run slop-lint path/to/file.py [more_files.py ...]
 
 Exits `1` if any findings are reported, `0` otherwise.
 
+### Example
+
+Given a file with a wordy, passive docstring:
+
+```python
+def process(data):
+    """This function was designed by the engineer to process the input data
+    structure that is passed into it by the caller in order to produce a
+    cleansed and normalized output representation."""
+    # The value was computed above.
+    return data
+```
+
+Running `slop-lint` reports the violations and their locations:
+
+```console
+$ uv run slop-lint example.py
+example.py:2:4: [max-sentence-length] sentence has 31 words (max 20): "This function was designed by the engineer to process the input data structure that is passed into it by the caller in order to produce a cleansed and normalized output representation."
+example.py:2:18: [passive-voice] possible passive voice: "was designed"
+example.py:2:91: [passive-voice] possible passive voice: "is passed"
+example.py:5:14: [passive-voice] possible passive voice: "was computed"
+```
+
 ## Development
 
 This repo uses [uv](https://docs.astral.sh/uv/) for environment and
