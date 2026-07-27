@@ -33,6 +33,7 @@ One decorator per test. `feature` and `kind` are required strings.
 ```python
 from pytest_testmap import testmap
 
+
 @testmap(feature="parser", kind="unit")
 def test_parses_empty():
     assert parse("") == []

@@ -10,7 +10,15 @@ from pytest_testmap import testmap
 
 from slop_lint.config import Config
 from slop_lint.extract import TextBlock
-from slop_lint.rules import banned_words, max_sentence_length, noun_cluster_length, passive_voice
+from slop_lint.rules import (
+    auxiliary_verb_complex,
+    banned_words,
+    max_sentence_length,
+    noun_cluster_length,
+    passive_voice,
+)
+
+PERF_TEXT = "word " * 20000
 
 
 def make_block(text: str, line: int = 1, col: int = 4) -> TextBlock:
@@ -130,4 +138,34 @@ def test_noun_cluster_length_perf():
     text = "Replace the fuel pump drive shaft gear housing assembly. " * 500
     start = time.perf_counter()
     noun_cluster_length.check(make_block(text), config)
+    assert time.perf_counter() - start < 1.0
+
+
+# -- auxiliary-verb-complex ---------------------------------------------------
+
+
+@testmap(feature="rule-auxiliary-verb-complex", kind="unit")
+def test_auxiliary_verb_complex_unit():
+    findings = auxiliary_verb_complex.check(
+        make_block("You should have finished checking the panel."), Config()
+    )
+    assert len(findings) == 1
+    assert "should have finished" in findings[0].message
+
+
+@testmap(feature="rule-auxiliary-verb-complex", kind="property")
+@given(
+    st.sampled_from(["can", "could", "may", "might", "must", "shall", "should", "will", "would"])
+)
+def test_auxiliary_verb_complex_flags_every_modal(modal: str):
+    findings = auxiliary_verb_complex.check(
+        make_block(f"It {modal} have finished by then."), Config()
+    )
+    assert len(findings) == 1
+
+
+@testmap(feature="rule-auxiliary-verb-complex", kind="perf")
+def test_auxiliary_verb_complex_perf():
+    start = time.perf_counter()
+    auxiliary_verb_complex.check(make_block(PERF_TEXT), Config())
     assert time.perf_counter() - start < 1.0

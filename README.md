@@ -15,6 +15,7 @@ prose:
 | `banned-words` | Words from the built-in default list (`src/slop_lint/data/banned_words.txt`), plus any you add in `pyproject.toml` |
 | `max-sentence-length` | Sentences longer than a configurable word count (STE-100 targets ~20 words) |
 | `passive-voice` | `be` + past-participle constructions (`was written`, `is given`), as a proxy for STE-100's active-voice requirement |
+| `auxiliary-verb-complex` | Modal + `have` (+ `been`) + participle chains (`should have finished`), as a proxy for STE-100's disallowed complex verb constructions |
 
 This is a **heuristic subset** of ASD-STE100, not a full implementation of the
 spec (which also defines an ~900-word approved dictionary and rules like
