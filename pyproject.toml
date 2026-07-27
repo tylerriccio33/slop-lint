@@ -24,6 +24,8 @@ dev = [
     "pyrefly>=0.13",
     "tox>=4.23",
     "tox-uv>=1.13",
+    "pytest-testmap>=0.3.0",
+    "hypothesis>=6.161.5",
 ]
 
 [tool.slop-lint]
@@ -52,3 +54,17 @@ exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 
 [tool.pyrefly]
 project-includes = ["src", "tests"]
+
+[tool.testmap]
+kinds = ["unit", "property", "perf"]
+required = ["unit", "property", "perf"]
+
+[[tool.testmap.generate]]
+select = "functions"
+from = "src/slop_lint/extract.py"
+where = "public"
+
+[[tool.testmap.generate]]
+select = "functions"
+from = "src/slop_lint/rules/position.py"
+where = "public"
