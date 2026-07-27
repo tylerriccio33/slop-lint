@@ -15,6 +15,8 @@ typecheck: ## Run pyrefly typecheck
 check: ## Run lint, typecheck, and tests (with coverage) via tox
 	@uv run tox
 
+BRANCH ?= $(shell echo "$(MSG)" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9' '-' | sed 's/-\+/-/g; s/^-//; s/-$$//')
+
 ci: ## Commit on a branch, open a PR, merge it, then switch back to main and pull
 	@echo "Staging everything"
 	@git add .

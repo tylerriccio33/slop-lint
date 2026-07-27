@@ -22,7 +22,6 @@ from slop_lint.rules import (
     approved_abbreviations,
     approved_verb_forms,
     approved_word_sense,
-    auxiliary_verb_complex,
     descriptive_sentence_length,
     ing_form_usage,
     instruction_clarity,
@@ -109,31 +108,6 @@ def test_approved_word_sense_property_stub_always_empty(text: str):
 def test_approved_word_sense_perf():
     start = time.perf_counter()
     approved_word_sense.check(make_block(PERF_TEXT), Config())
-    assert time.perf_counter() - start < 1.0
-
-
-# -- auxiliary-verb-complex -----------------------------------------------
-
-
-@testmap(feature="rule-auxiliary-verb-complex", kind="unit")
-@pytest.mark.xfail(reason="not yet implemented", strict=True)
-def test_auxiliary_verb_complex_unit():
-    findings = auxiliary_verb_complex.check(
-        make_block("You should have finished checking the panel."), Config()
-    )
-    assert findings != []
-
-
-@testmap(feature="rule-auxiliary-verb-complex", kind="property")
-@given(st.text(min_size=0, max_size=200))
-def test_auxiliary_verb_complex_property_stub_always_empty(text: str):
-    assert auxiliary_verb_complex.check(make_block(text), Config()) == []
-
-
-@testmap(feature="rule-auxiliary-verb-complex", kind="perf")
-def test_auxiliary_verb_complex_perf():
-    start = time.perf_counter()
-    auxiliary_verb_complex.check(make_block(PERF_TEXT), Config())
     assert time.perf_counter() - start < 1.0
 
 
