@@ -42,6 +42,16 @@ All keys are optional; the defaults above apply if omitted. `banned-words` in
 `pyproject.toml` *adds to* the built-in default list rather than replacing it —
 see `src/slop_lint/data/banned_words.txt` for the shipped defaults.
 
+## Suppressing a finding
+
+Add a `# slop-lint: ignore` comment on the offending line to suppress every
+finding on that line, or `# slop-lint: ignore[rule-name, other-rule]` to
+suppress only specific rules:
+
+```python
+# The value was computed above.  # slop-lint: ignore[passive-voice]
+```
+
 ## Use as a pre-commit hook
 
 This project ships a `.pre-commit-hooks.yaml`, so it works with either
@@ -119,7 +129,6 @@ and `slop-lint` on every commit via `prek run --all-files`.
   complex conjunction limits
 - Support for languages beyond Python (comment/docstring extraction is
   currently AST + `tokenize`-based and Python-specific)
-- Inline suppression comments (e.g. `# slop-lint: ignore`)
 
 ## License
 
