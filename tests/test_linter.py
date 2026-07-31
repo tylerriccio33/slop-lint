@@ -29,3 +29,13 @@ def test_lint_source_findings_sorted_by_position():
     findings = lint_source(SOURCE, config)
     positions = [(f.line, f.col) for f in findings]
     assert positions == sorted(positions)
+
+
+def test_lint_source_respects_inline_suppression_comment():
+    source = '''"""This is the new module."""
+
+    # an old comment  # slop-lint: ignore
+'''
+    config = Config(enabled_rules=("banned-words",), banned_words=frozenset({"new", "old"}))
+    findings = lint_source(source, config)
+    assert all(f.line != 3 for f in findings)

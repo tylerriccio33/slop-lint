@@ -8,6 +8,7 @@ from slop_lint.config import Config
 from slop_lint.extract import extract_text_blocks, extract_text_blocks_for_file
 from slop_lint.rules import REGISTRY
 from slop_lint.rules.base import Finding
+from slop_lint.suppress import filter_suppressed
 
 
 def lint_source(source: str, config: Config, path: Path | None = None) -> list[Finding]:
@@ -20,4 +21,5 @@ def lint_source(source: str, config: Config, path: Path | None = None) -> list[F
     for block in blocks:
         for rule in active_rules:
             findings.extend(rule.check(block, config))
+    findings = filter_suppressed(findings, source)
     return sorted(findings, key=lambda f: (f.line, f.col))
