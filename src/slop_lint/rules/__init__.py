@@ -16,6 +16,7 @@ from slop_lint.rules import (
     max_sentence_length,
     max_sentences_per_paragraph,
     no_omitted_sentence_parts,
+    no_prose,
     noun_cluster_length,
     one_instruction_per_sentence,
     one_topic_per_paragraph,
@@ -42,4 +43,5 @@ REGISTRY: dict[str, ModuleType] = {
     safety_instruction_start.name: safety_instruction_start,
     approved_word_sense.name: approved_word_sense,
     approved_abbreviations.name: approved_abbreviations,
+    no_prose.name: no_prose,
 }
