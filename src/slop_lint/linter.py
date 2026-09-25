@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from slop_lint.budget import check_budget
 from slop_lint.config import Config
 from slop_lint.extract import extract_text_blocks, extract_text_blocks_for_file
 from slop_lint.rules import REGISTRY
@@ -21,5 +22,7 @@ def lint_source(source: str, config: Config, path: Path | None = None) -> list[F
     for block in blocks:
         for rule in active_rules:
             findings.extend(rule.check(block, config))
+    if config.loc_per_prose_line and (path is None or path.suffix == ".py"):
+        findings.extend(check_budget(source, config.loc_per_prose_line))
     findings = filter_suppressed(findings, source)
     return sorted(findings, key=lambda f: (f.line, f.col))
