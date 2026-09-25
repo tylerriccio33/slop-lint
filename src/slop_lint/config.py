@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import tomllib
 from dataclasses import dataclass, field, replace
+from fnmatch import fnmatch
 from functools import cache
 from importlib import resources
 from pathlib import Path
@@ -29,6 +30,21 @@ class Config:
     max_sentence_length: int = DEFAULT_MAX_SENTENCE_LENGTH
     max_noun_cluster_length: int = DEFAULT_MAX_NOUN_CLUSTER_LENGTH
     loc_per_prose_line: int | None = None
+    exclude: tuple[str, ...] = ()
+    root: Path | None = None
+
+    def is_excluded(self, path: Path) -> bool:
+        """Whether ``path`` matches an ``exclude`` glob, relative to the pyproject folder."""
+        if not self.exclude:
+            return False
+        resolved = path.resolve()
+        base = (self.root or Path.cwd()).resolve()
+        rel = resolved.relative_to(base) if resolved.is_relative_to(base) else resolved
+        target = rel.as_posix()
+        return any(
+            fnmatch(target, pattern) or fnmatch(target, pattern.removeprefix("**/"))
+            for pattern in self.exclude
+        )
 
     def with_preset(self, preset: str | None) -> Config:
         if preset is None:
@@ -49,6 +65,7 @@ class Config:
         budget = section.get("budget", {})
         config = cls(
             enabled_rules=tuple(section.get("enable", DEFAULT_ENABLED_RULES)),
+            exclude=tuple(section.get("exclude", ())),
             banned_words=default_banned_words() | extra_words,
             max_sentence_length=int(
                 section.get("max-sentence-length", DEFAULT_MAX_SENTENCE_LENGTH)
@@ -76,4 +93,4 @@ def load_config(start: Path | None = None) -> Config:
     if path is None:
         return Config()
     data = tomllib.loads(path.read_text(encoding="utf-8"))
-    return Config.from_dict(data)
+    return replace(Config.from_dict(data), root=path.parent)

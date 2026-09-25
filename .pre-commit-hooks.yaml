@@ -1,6 +1,6 @@
 - id: slop-lint
   name: slop-lint
-  description: Lint Python docstrings and comments for ASD-STE100 style and banned words.
+  description: Lint docstrings, comments, and prose for ASD-STE100 style and banned words.
   entry: slop-lint
   language: python
-  types: [python]
+  types_or: [python, rust, markdown, plain-text, makefile]

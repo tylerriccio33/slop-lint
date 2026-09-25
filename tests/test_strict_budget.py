@@ -216,3 +216,48 @@ def test_strip_prose_output_parses_and_has_no_prose(fragments: list[str]):
 
 def test_strip_prose_removes_string_that_becomes_docstring():
     assert strip_prose('def f():\n    """a"""\n    """b"""\n') == "def f():\n    pass\n"
+
+
+GOLDEN = '"""We utilize a cache."""\n'
+
+
+@pytest.fixture
+def goldens(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    (tmp_path / "pyproject.toml").write_text(
+        '[tool.slop-lint]\nexclude = ["tests/goldens/**", "**/fixtures/*.py"]\n'
+    )
+    for rel in ["tests/goldens/a.py", "tests/goldens/deep/b.py", "fixtures/c.py", "src/d.py"]:
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text(GOLDEN)
+    monkeypatch.chdir(tmp_path)
+    return tmp_path
+
+
+def test_exclude_skips_matching_files(goldens: Path, capsys):
+    files = ["tests/goldens/a.py", "tests/goldens/deep/b.py", "fixtures/c.py", "src/d.py"]
+    assert main(files) == 1
+    out = capsys.readouterr().out
+    assert "src/d.py" in out
+    assert "goldens" not in out
+    assert "fixtures" not in out
+
+
+def test_exclude_matches_absolute_paths_from_subdirectory(
+    goldens: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(goldens / "tests")
+    assert main([str(goldens / "tests/goldens/a.py")]) == 0
+
+
+def test_exclude_cli_flag_adds_patterns(goldens: Path):
+    assert main(["--exclude", "src/*", "src/d.py"]) == 0
+
+
+def test_fix_leaves_excluded_files_alone(goldens: Path):
+    assert main(["--fix", "tests/goldens/a.py", "src/d.py"]) == 0
+    assert (goldens / "tests/goldens/a.py").read_text() == GOLDEN
+    assert (goldens / "src/d.py").read_text() == ""
+
+
+def test_no_exclude_means_nothing_excluded(tmp_path: Path):
+    assert not Config().is_excluded(tmp_path / "a.py")

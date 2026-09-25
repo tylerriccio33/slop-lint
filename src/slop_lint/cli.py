@@ -4,19 +4,20 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 from slop_lint import color
-from slop_lint.config import PRESETS, load_config
+from slop_lint.config import PRESETS, Config, load_config
 from slop_lint.extract import is_supported_file
 from slop_lint.linter import lint_source
 from slop_lint.strip import strip_prose
 
 
-def _fix(paths: list[Path], use_color: bool) -> int:
+def _fix(paths: list[Path], config: Config, use_color: bool) -> int:
     fixed = 0
     for path in paths:
-        if path.suffix != ".py":
+        if path.suffix != ".py" or config.is_excluded(path):
             continue
         source = path.read_text(encoding="utf-8")
         try:
@@ -46,6 +47,13 @@ def main(argv: list[str] | None = None) -> int:
         help="allow one prose line per N lines of code in each module, class, and def",
     )
     parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="skip files matching GLOB (repeatable); adds to exclude in pyproject.toml",
+    )
+    parser.add_argument(
         "--fix",
         action="store_true",
         help="remove every docstring and comment from Python files (strict preset)",
@@ -53,14 +61,15 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     use_color = color.supports_color()
-    if args.fix:
-        return _fix(args.files, use_color)
-
     config = load_config().with_preset(args.preset).with_budget(args.budget)
+    config = replace(config, exclude=(*config.exclude, *args.exclude))
+    if args.fix:
+        return _fix(args.files, config, use_color)
+
     finding_count = 0
 
     for path in args.files:
-        if not is_supported_file(path):
+        if not is_supported_file(path) or config.is_excluded(path):
             continue
         source = path.read_text(encoding="utf-8")
         for finding in lint_source(source, config, path=path):

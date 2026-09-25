@@ -48,6 +48,7 @@ enable = ["banned-words", "max-sentence-length", "passive-voice"]
 banned-words = ["frobnicate"]
 max-sentence-length = 20
 max-noun-cluster-length = 3
+exclude = ["tests/goldens/**", "**/fixtures/*.py"]
 preset = "strict"              # optional, see below
 
 [tool.slop-lint.budget]
@@ -57,6 +58,10 @@ loc-per-prose-line = 5         # optional, see below
 All keys are optional; the defaults above apply if omitted. `banned-words` in
 `pyproject.toml` *adds to* the built-in default list rather than replacing it —
 see `src/slop_lint/data/banned_words.txt` for the shipped defaults.
+
+`exclude` globs match paths relative to the folder that holds
+`pyproject.toml`. Excluded files are skipped by the linter and by `--fix`.
+Add more patterns for one run with `--exclude GLOB`.
 
 ## Strict preset
 
